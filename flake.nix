@@ -14,10 +14,13 @@
     flake-utils.lib.eachDefaultSystem (
       system: let
         pkgs = nixpkgs.legacyPackages.${system};
-        dependencies = [pkgs.typst pkgs.cm_unicode];
+        dependencies = [pkgs.typst pkgs.newcomputermodern];
       in {
         # nix develop
         devShells.default = pkgs.mkShell {
+          shellHook = ''
+            export TYPST_FONT_PATHS=${pkgs.newcomputermodern}
+          '';
           buildInputs = dependencies;
         };
 
@@ -26,13 +29,17 @@
         # compilation needs internet
         devShells.compile = pkgs.mkShell {
           buildInputs = dependencies;
-          shellHook = "typst compile main.typ; exit";
+          shellHook = ''
+            exec typst compile main.typ --font-path ${pkgs.newcomputermodern}
+          '';
         };
 
         # nix develop .#watch
         devShells.watch = pkgs.mkShell {
           buildInputs = dependencies;
-          shellHook = "typst watch main.typ";
+          shellHook = ''
+            exec typst watch main.typ --font-path ${pkgs.newcomputermodern}
+          '';
         };
       }
     );

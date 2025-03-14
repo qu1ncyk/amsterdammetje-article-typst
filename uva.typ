@@ -61,8 +61,8 @@
   // LaTeX look: https://typst.app/docs/guides/guide-for-latex-users/#latex-look
   set page(margin: (rest: 30mm, top: 35mm))
   set par(leading: 0.55em, first-line-indent: 1.8em, justify: true)
-  set text(font: "CMU Serif", 10pt)
-  show raw: set text(font: "CMU Typewriter Text")
+  set text(font: "New Computer Modern", 10pt)
+  show raw: set text(font: "New Computer Modern Mono")
   set par(spacing: 0.55em)
   show heading: set block(above: 1.4em, below: 1em)
 
@@ -112,34 +112,6 @@
     })
   }
 
-  // At the time of writing, `smallcaps` doesn't seem to work with New Computer
-  // Modern in Typst. This function recreates the `smallcaps` functionality
-  // using upper case letters and different font sizes.
-  let smallcaps-polyfill(content) = {
-    let str-to-smallcaps(array) = {
-      array.map(x => {
-        if lower(x) == x {
-          text(0.8em, upper(x))
-        } else {
-          text(1.1em, x)
-        }
-      }).join()
-    }
-    let content = [#content]
-
-    // Traverse `content`: https://github.com/typst/typst/issues/2196#issuecomment-1728135476
-    if content.has("text") {
-      str-to-smallcaps(content.text.split(""))
-    } else if content.has("children") {
-      content.children.map(smallcaps-polyfill).join()
-    } else if content.has("body") {
-      smallcaps-polyfill(content.body)
-    } else {
-      content
-    }
-  }
-
-
   // Format the given date in Dutch.
   let format-date-nl() = {
     let months = (
@@ -181,7 +153,7 @@
           ),
           align(right,
             text(footnotesize,
-              smallcaps-polyfill[
+              smallcaps[
                 #assignment-type \
                 #assignment-name
               ]
@@ -232,7 +204,7 @@
         image("logoUvA_en.svg", width: 7cm),
       ),
       v(1cm),
-      text(Large, smallcaps-polyfill(assignment-name)),
+      text(Large, smallcaps(assignment-name)),
       v(0.4cm),
       text(huge, strong(title)),
       v(0.4cm),

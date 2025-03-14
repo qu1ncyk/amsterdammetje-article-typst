@@ -20,6 +20,8 @@
         devShells.default = pkgs.mkShell {
           shellHook = ''
             export TYPST_FONT_PATHS=${pkgs.newcomputermodern}
+            # https://github.com/typst/typst/issues/5282
+            unset SOURCE_DATE_EPOCH
           '';
           buildInputs = dependencies;
         };
@@ -30,6 +32,8 @@
         devShells.compile = pkgs.mkShell {
           buildInputs = dependencies;
           shellHook = ''
+            # https://github.com/typst/typst/issues/5282
+            unset SOURCE_DATE_EPOCH
             exec typst compile main.typ --font-path ${pkgs.newcomputermodern}
           '';
         };
@@ -38,6 +42,8 @@
         devShells.watch = pkgs.mkShell {
           buildInputs = dependencies;
           shellHook = ''
+            # https://github.com/typst/typst/issues/5282
+            unset SOURCE_DATE_EPOCH
             exec typst watch main.typ --font-path ${pkgs.newcomputermodern}
           '';
         };

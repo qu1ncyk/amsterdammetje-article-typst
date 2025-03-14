@@ -55,15 +55,15 @@
   title: "",
   date: datetime.today(),
 ) = {
-  import "@preview/wordometer:0.1.1": word-count, total-words
-  import "@preview/cetz:0.2.2"
+  import "@preview/wordometer:0.1.4": word-count, total-words
+  import "@preview/cetz:0.3.4"
 
   // LaTeX look: https://typst.app/docs/guides/guide-for-latex-users/#latex-look
   set page(margin: (rest: 30mm, top: 35mm))
   set par(leading: 0.55em, first-line-indent: 1.8em, justify: true)
-  set text(font: "New Computer Modern", 10pt)
-  show raw: set text(font: "New Computer Modern Mono")
-  show par: set block(spacing: 0.55em)
+  set text(font: "CMU Serif", 10pt)
+  show raw: set text(font: "CMU Typewriter Text")
+  set par(spacing: 0.55em)
   show heading: set block(above: 1.4em, below: 1em)
 
   set heading(numbering: "1.1  ")

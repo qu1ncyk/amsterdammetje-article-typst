@@ -14,6 +14,7 @@
   course-id: none,
   assignment-name: "Naam van de opdracht",
   assignment-type: "Type opdracht",
+  link-outline: true
 )
 
 // #outline()

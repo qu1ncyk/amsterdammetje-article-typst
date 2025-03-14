@@ -56,6 +56,7 @@
   assignment-type: none,
   title: "",
   date: datetime.today(),
+  link-outline: true
 ) = doc => {
   // LaTeX look: https://typst.app/docs/guides/guide-for-latex-users/#latex-look
   set page(margin: (rest: 30mm, top: 35mm))
@@ -70,6 +71,13 @@
   set bibliography(style: "american-sociological-association")
   show figure.where(kind: table): set figure.caption(position: top)
   show bibliography: set par(first-line-indent: 0em)
+
+  let stroke = none
+  if link-outline {
+    stroke = 0.5pt + color.rgb(0, 255, 255)
+  }
+  show link: body => box(body, stroke: stroke)
+  show ref: body => box(body, stroke: stroke)
 
   // Draw an Andrew's cross (known as Andreaskruis in Dutch) in a Cetz canvas.
   let andrew-cross(color: black) = {

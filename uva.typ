@@ -1,3 +1,6 @@
+#import "@preview/wordometer:0.1.4": word-count, total-words
+#import "@preview/cetz:0.3.4"
+
 // LaTeX font sizes: https://tex.stackexchange.com/a/24600
 #let footnotesize = 8pt
 #let small = 9pt
@@ -55,9 +58,6 @@
   title: "",
   date: datetime.today(),
 ) = {
-  import "@preview/wordometer:0.1.4": word-count, total-words
-  import "@preview/cetz:0.3.4"
-
   // LaTeX look: https://typst.app/docs/guides/guide-for-latex-users/#latex-look
   set page(margin: (rest: 30mm, top: 35mm))
   set par(leading: 0.55em, first-line-indent: 1.8em, justify: true)

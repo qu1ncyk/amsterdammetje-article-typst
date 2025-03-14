@@ -1,0 +1,272 @@
+// LaTeX font sizes: https://tex.stackexchange.com/a/24600
+#let footnotesize = 8pt
+#let small = 9pt
+#let large = 12pt
+#let Large = 14.4pt
+#let huge = 20.74pt
+
+// Put the name of an author in the margin next to the previous heading.
+#let heading-author(content) = context {
+  let heading-pos = query(
+    selector(heading).before(here()),
+  ).last().location().position()
+  let here-pos = here().position()
+
+  place(
+    move(
+      dx: -here-pos.x + 2.5mm,
+      dy: -here-pos.y + heading-pos.y,
+      box(width: 25mm, align(right, text(content, footnotesize)))
+    )
+  )
+}
+
+// Return either the Dutch or English input based on the document language.
+#let nl-en(nl, en) = context {
+  if text.lang == "nl" { nl } else { en }
+}
+
+// Add an abstract to the document.
+#let abstract(content) = {
+  set text(small)
+  par(justify: false, {
+    align(center,
+      strong(nl-en[Samenvatting][Abstract])
+    )
+    v(0.5em)
+    content
+  })
+}
+
+// The actual template. Use it in a `show` rule to wrap the entire document in
+// a function call.
+#let uva(
+  doc,
+  authors: (),
+  ids: (),
+  tutor: none,
+  mentor: none,
+  group: none,
+  lecturer: none,
+  course: none,
+  course-id: none,
+  assignment-name: none,
+  assignment-type: none,
+  title: "",
+  date: datetime.today(),
+) = {
+  import "@preview/wordometer:0.1.1": word-count, total-words
+  import "@preview/cetz:0.2.2"
+
+  // LaTeX look: https://typst.app/docs/guides/guide-for-latex-users/#latex-look
+  set page(margin: (rest: 30mm, top: 35mm))
+  set par(leading: 0.55em, first-line-indent: 1.8em, justify: true)
+  set text(font: "New Computer Modern", 10pt)
+  show raw: set text(font: "New Computer Modern Mono")
+  show par: set block(spacing: 0.55em)
+  show heading: set block(above: 1.4em, below: 1em)
+
+  set heading(numbering: "1.1  ")
+  set document(title: title, author: authors, date: date)
+  set bibliography(style: "american-sociological-association")
+  show figure.where(kind: table): set figure.caption(position: top)
+  show bibliography: set par(first-line-indent: 0em)
+
+  // Draw an Andrew's cross (known as Andreaskruis in Dutch) in a Cetz canvas.
+  let andrew-cross(color: black) = {
+    import cetz.draw: *
+    group({
+      rotate(45deg)
+      line(
+        (1, 0), (2, 0), (2, 1), (3, 1), (3, 2), (2, 2),
+        (2, 3), (1, 3), (1, 2), (0, 2), (0, 1), (1, 1),
+        close: true,
+        fill: color,
+        stroke: none,
+      )
+    })
+  }
+
+  // Draw a line of Andrew's crosses.
+  let andrew-line(scale-factor, amount, distance, gradient: false) = {
+    set align(center)
+    cetz.canvas({
+      import cetz.draw: *
+
+      for i in range(amount) {
+        group({
+          translate(x: i * distance)
+          scale(scale-factor)
+
+          if gradient {
+            andrew-cross(
+              color: color.luma(calc.floor(255 * (
+                1 - calc.sin((i + 2) * calc.pi / (amount + 2))
+              ))),
+            )
+          } else {
+            andrew-cross(color: color.luma(64))
+          }
+        })
+      }
+    })
+  }
+
+  // At the time of writing, `smallcaps` doesn't seem to work with New Computer
+  // Modern in Typst. This function recreates the `smallcaps` functionality
+  // using upper case letters and different font sizes.
+  let smallcaps-polyfill(content) = {
+    let str-to-smallcaps(array) = {
+      array.map(x => {
+        if lower(x) == x {
+          text(0.8em, upper(x))
+        } else {
+          text(1.1em, x)
+        }
+      }).join()
+    }
+    let content = [#content]
+
+    // Traverse `content`: https://github.com/typst/typst/issues/2196#issuecomment-1728135476
+    if content.has("text") {
+      str-to-smallcaps(content.text.split(""))
+    } else if content.has("children") {
+      content.children.map(smallcaps-polyfill).join()
+    } else if content.has("body") {
+      smallcaps-polyfill(content.body)
+    } else {
+      content
+    }
+  }
+
+
+  // Format the given date in Dutch.
+  let format-date-nl() = {
+    let months = (
+      [januari], [februari], [maart], [april], [mei], [juni],
+      [juli], [augustus], [september], [oktober], [november], [december],
+    )
+    [#date.day() #months.at(date.month() - 1) #date.year()]
+  }
+
+  // Format the given date in English.
+  let format-date-en() = {
+    let months = (
+      [January], [February], [March], [April], [May], [June],
+      [July], [August], [September], [October], [November], [December],
+    )
+    [#months.at(date.month() - 1) #date.day(), #date.year()]
+  }
+
+  // Return an entry for the right column on the first page.
+  let meta-info(nl, en, value) = {
+    if value != none [
+      _#nl-en(nl, en):_ \
+      #value
+      #v(0.2cm)
+    ]
+  }
+
+  // Put the UvA logo and assignment name in the header of every page, except
+  // the first.
+  set page(
+    header: context {
+      let c = counter(page)
+      if c.get() != (1,) {
+        stack(
+          dir: ltr,
+          nl-en(
+            image("logoUvA_nl.svg", width: 5cm),
+            image("logoUvA_en.svg", width: 5cm),
+          ),
+          align(right,
+            text(footnotesize,
+              smallcaps-polyfill[
+                #assignment-type \
+                #assignment-name
+              ]
+            )
+          ),
+        )
+        andrew-line(0.04, 74, 0.2)
+      }
+    },
+  )
+
+  // Add the page count and word count / authors in the footer.
+  set page(
+    footer: context {
+      andrew-line(0.04, 74, 0.2)
+
+      let c = counter(page)
+      if c.get() == (1,) {
+        text(small,
+          emph[#total-words #nl-en[woorden][words]]
+        )
+      } else {
+        text(footnotesize, authors.join([, ]))
+      }
+
+      h(1fr)
+
+      upper(
+        text(small * 0.8,
+          c.display(
+            both: true,
+            (from, to) => {
+              nl-en[pagina #from van #to][page #from of #to]
+            },
+          )
+        )
+      )
+    },
+  )
+
+  show: word-count
+
+  // The front page of the document.
+  align(
+    stack(
+      nl-en(
+        image("logoUvA_nl.svg", width: 7cm),
+        image("logoUvA_en.svg", width: 7cm),
+      ),
+      v(1cm),
+      text(Large, smallcaps-polyfill(assignment-name)),
+      v(0.4cm),
+      text(huge, strong(title)),
+      v(0.4cm),
+      andrew-line(0.1, 29, 0.5, gradient: true),
+      v(0.4cm),
+      text(large, nl-en(format-date-nl(), format-date-en())),
+      v(0.5cm),
+
+      grid(columns: (1fr, 41%, 41%, 1fr),
+        [],
+        align(left + horizon)[
+          _#if authors.len() == 1 {
+            [Student]
+          } else {
+            nl-en[Studenten][Students]
+          }:_ \
+          #authors.zip(ids).map(((author, id)) => [
+            #author \
+            #text(small, id)
+            #v(0.2cm - 0.5em) \
+          ]).join()
+        ],
+        align(right + horizon)[
+          #meta-info([Tutor], [Tutor], tutor)
+          #meta-info([Mentor], [Mentor], mentor)
+          #meta-info([Practicumgroep], [Group], group)
+          #meta-info([Docent], [Lecturer], lecturer)
+          #meta-info([Cursus], [Course], course)
+          #meta-info([Vakcode], [Course code], course-id)
+        ],
+        [],
+      ),
+    ), center,
+  )
+
+  doc
+}

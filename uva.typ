@@ -44,7 +44,6 @@
 // The actual template. Use it in a `show` rule to wrap the entire document in
 // a function call.
 #let uva(
-  doc,
   authors: (),
   ids: (),
   tutor: none,
@@ -57,7 +56,7 @@
   assignment-type: none,
   title: "",
   date: datetime.today(),
-) = {
+) = doc => {
   // LaTeX look: https://typst.app/docs/guides/guide-for-latex-users/#latex-look
   set page(margin: (rest: 30mm, top: 35mm))
   set par(leading: 0.55em, first-line-indent: 1.8em, justify: true)

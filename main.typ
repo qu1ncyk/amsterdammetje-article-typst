@@ -2,7 +2,7 @@
 
 #set text(lang: "nl")
 
-#show: uva.with(
+#show: uva(
   title: "Titel van het document",
   authors: ("Auteur 1", "Auteur 2"),
   ids: ("UvAnetID student 1", "UvAnetID student 2"),

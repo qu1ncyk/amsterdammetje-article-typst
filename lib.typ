@@ -32,13 +32,16 @@
 // Add an abstract to the document.
 #let abstract(content) = {
   set text(small)
-  par(justify: false, {
-    align(center,
-      strong(nl-en[Samenvatting][Abstract])
-    )
-    v(0.5em)
+  set par(first-line-indent: (amount: 1.8em, all: true), justify: false)
+  v(1em)
+  align(center,
+    strong(nl-en[Samenvatting][Abstract])
+  )
+  v(0.5em)
+  box(
+    inset: (x: 22pt),
     content
-  })
+  )
 }
 
 // The actual template. Use it in a `show` rule to wrap the entire document in

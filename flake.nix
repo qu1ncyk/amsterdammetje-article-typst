@@ -38,6 +38,15 @@
           '';
         };
 
+        # nix develop .#render-thumbnail
+        devShells.render-thumbnail = pkgs.mkShell {
+          buildInputs = dependencies ++ [pkgs.oxipng];
+          shellHook = ''
+            typst compile main.typ thumbnail.png --format png --font-path ${pkgs.newcomputermodern}
+            exec oxipng -o max -s thumbnail.png
+          '';
+        };
+
         # nix develop .#watch
         devShells.watch = pkgs.mkShell {
           buildInputs = dependencies;

@@ -6,7 +6,7 @@ used in the BSc Computer Science of the University of Amsterdam.
 ## Usage
 
 ```typst
-#import "@preview/amsterdammetje-article": article, heading-author, abstract
+#import "@preview/amsterdammetje-article:0.1.0": article, heading-author, abstract
 
 #set text(lang: "en") // or "nl"
 

@@ -34,7 +34,7 @@
           shellHook = ''
             # https://github.com/typst/typst/issues/5282
             unset SOURCE_DATE_EPOCH
-            exec typst compile main.typ --font-path ${pkgs.newcomputermodern}
+            exec typst compile template/main.typ --font-path ${pkgs.newcomputermodern}
           '';
         };
 
@@ -42,7 +42,7 @@
         devShells.render-thumbnail = pkgs.mkShell {
           buildInputs = dependencies ++ [pkgs.oxipng];
           shellHook = ''
-            typst compile main.typ thumbnail.png --format png --font-path ${pkgs.newcomputermodern}
+            typst compile template/main.typ thumbnail.png --format png --font-path ${pkgs.newcomputermodern}
             exec oxipng -o max -s thumbnail.png
           '';
         };
@@ -53,7 +53,7 @@
           shellHook = ''
             # https://github.com/typst/typst/issues/5282
             unset SOURCE_DATE_EPOCH
-            exec typst watch main.typ --font-path ${pkgs.newcomputermodern}
+            exec typst watch template/main.typ --font-path ${pkgs.newcomputermodern}
           '';
         };
       }

@@ -1,4 +1,4 @@
-#import "lib.typ": article, heading-author, abstract
+#import "@preview/amsterdammetje-article:0.1.0": article, heading-author, abstract
 
 #set text(lang: "nl")
 

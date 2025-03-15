@@ -9,3 +9,8 @@ repository = "https://github.com/qu1ncyk/amsterdammetje-article-typst"
 categories = ["report"]
 disciplines = ["computer-science"]
 keywords = ["uva", "article", "informatica"]
+
+[template]
+path = "template"
+entrypoint = "main.typ"
+thumbnail = "thumbnail.png"

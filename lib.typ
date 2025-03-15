@@ -65,7 +65,7 @@
   set page(margin: (rest: 30mm, top: 35mm))
   set par(leading: 0.55em, first-line-indent: 1.8em, justify: true)
   set text(font: "New Computer Modern", 10pt)
-  show raw: set text(font: "New Computer Modern Mono")
+  show raw: set text(font: "New Computer Modern Mono", 10pt)
   set par(spacing: 0.55em)
   show heading: set block(above: 1.4em, below: 1em)
 

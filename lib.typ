@@ -75,6 +75,10 @@
   show figure.where(kind: table): set figure.caption(position: top)
   show bibliography: set par(first-line-indent: 0em)
 
+  set outline.entry(fill: repeat([.], gap: 0.5em))
+  show outline.entry.where(level: 1): set outline.entry(fill: none)
+  show outline.entry.where(level: 1): body => linebreak() + strong(body)
+
   let stroke = none
   if link-outline {
     stroke = 0.5pt + color.rgb(0, 255, 255)

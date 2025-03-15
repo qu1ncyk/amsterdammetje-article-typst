@@ -1,8 +1,8 @@
-#import "uva.typ": uva, heading-author, abstract
+#import "lib.typ": article, heading-author, abstract
 
 #set text(lang: "nl")
 
-#show: uva(
+#show: article(
   title: "Titel van het document",
   authors: ("Auteur 1", "Auteur 2"),
   ids: ("UvAnetID student 1", "UvAnetID student 2"),

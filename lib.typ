@@ -43,7 +43,7 @@
 
 // The actual template. Use it in a `show` rule to wrap the entire document in
 // a function call.
-#let uva(
+#let article(
   authors: (),
   ids: (),
   tutor: none,

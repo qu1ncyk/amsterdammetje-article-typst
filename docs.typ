@@ -1,5 +1,5 @@
 #import "@preview/tidy:0.4.2"
-#import "@preview/amsterdammetje-article:0.1.0": heading-author
+#import "@preview/amsterdammetje-article:0.1.1": heading-author
 
 = Amsterdammetje Article
 (Unofficial) Typst rewrite of

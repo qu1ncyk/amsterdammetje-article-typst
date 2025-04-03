@@ -14,7 +14,7 @@
 /// - content (content): The name of the author.
 /// -> content
 /// ```example
-/// >>>#import "@preview/amsterdammetje-article:0.1.0": heading-author
+/// >>>#import "@preview/amsterdammetje-article:0.1.1": heading-author
 /// >>>#set text(0.7em)
 /// == A heading
 /// #heading-author[John Doe]

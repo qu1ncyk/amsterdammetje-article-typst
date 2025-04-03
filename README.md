@@ -3,6 +3,8 @@
 (Unofficial) Typst rewrite of [LaTeX article template](https://www.overleaf.com/latex/templates/uva-informatica-template-artikel/dsjkstcpphny)
 used in the BSc Computer Science of the University of Amsterdam.
 
+[Documentation](https://github.com/qu1ncyk/amsterdammetje-article-typst/releases/download/v0.1.1/docs.pdf)
+
 ## Usage
 
 ```typst

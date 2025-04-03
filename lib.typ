@@ -10,7 +10,16 @@
   huge:  20.74pt
 )
 
-// Put the name of an author in the margin next to the previous heading.
+/// Put the name of an author in the margin next to the previous heading.
+/// - content (content): The name of the author.
+/// -> content
+/// ```example
+/// >>>#import "@preview/amsterdammetje-article:0.1.0": heading-author
+/// >>>#set text(0.7em)
+/// == A heading
+/// #heading-author[John Doe]
+/// The author's name is in the margin.
+/// ```
 #let heading-author(content) = context {
   let heading-pos = query(
     selector(heading).before(here()),
@@ -26,12 +35,17 @@
   )
 }
 
-// Return either the Dutch or English input based on the document language.
+/// Return either the Dutch or English input based on the document language.
+/// - nl (content): The Dutch content.
+/// - en (content): The English content.
+/// -> content
 #let nl-en(nl, en) = context {
   if text.lang == "nl" { nl } else { en }
 }
 
-// Add an abstract to the document.
+/// Add an abstract to the document.
+/// - content (content): The text inside the abstract.
+/// -> content
 #let abstract(content) = {
   set text(font-sizes.small)
   set par(first-line-indent: (amount: 1.8em, all: true), justify: false)
@@ -46,8 +60,26 @@
   )
 }
 
-// The actual template. Use it in a `show` rule to wrap the entire document in
-// a function call.
+/// The actual template. Use it in a `show` rule to wrap the entire document in
+/// a function call.
+/// - authors (array, str): The authors of the document.
+/// - ids (array, str): The UvAnetIDs of the authors.
+///   The first ID corresponds with the first author,
+///   the second ID with the second author, etc.
+/// - tutor (str, none): 
+/// - mentor (str, none): 
+/// - group (str, none): 
+/// - lecturer (str, none): 
+/// - course (str, none): 
+/// - course-id (str, none): You can find this on #link("https://datanose.nl")[DataNose].
+/// - assignment-name (str, none): The name of the assignment as given by the instructor.
+/// - assignment-type (str, none): The type of the assignment,
+///   such as "technical report" or "essay".
+/// - title (str, none): 
+/// - date (datetime): 
+/// - link-outline (bool): Whether to surround links with a rectangle,
+///   similar to what hyperref does.
+/// -> function
 #let article(
   authors: (),
   ids: (),

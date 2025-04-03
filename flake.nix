@@ -1,5 +1,5 @@
 {
-  description = "Typst document";
+  description = "Amsterdammetje Article";
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
@@ -44,6 +44,14 @@
           shellHook = ''
             typst compile template/main.typ thumbnail.png --format png --font-path ${pkgs.newcomputermodern}
             exec oxipng -o max -s thumbnail.png
+          '';
+        };
+
+        # nix develop .#render-docs
+        devShells.render-docs = pkgs.mkShell {
+          buildInputs = dependencies;
+          shellHook = ''
+            exec typst compile docs.typ --font-path ${pkgs.newcomputermodern}
           '';
         };
 
